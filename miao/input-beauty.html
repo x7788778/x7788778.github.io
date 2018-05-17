@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+    <style>
+      html {font-family: sans-serif;}
+      
+      .formstyle {
+                  max-width:500px;
+                  height: auto;
+                  padding:10px 20px;
+                  background: rgb(204,237,238) ;
+                  border-radius:91px 60px;
+                  font-family:xmonospace,sans-serif;
+                  margin:auto;
+                  margin-top:50px;}
+
+      .formstyle fieldset {border:none;}
+
+
+      .formstyle legent {font-size:1.4em;
+                         margin-bottom:0px;
+                         padding:10px;
+                        }
+    
+
+      span:first-child {xborder:1px solid ;
+                        background-color: rgb(131,221,211);
+                        border-radius:15px 15px 15px 0;
+                        margin:1px 10px 0px 0px ;
+                        padding:4px;
+                        }
+
+      .formstyle input[type="text"],
+      .formstyle input[type="email"],
+      .formstyle textarea,
+      .formstyle select {
+                         transition:background 1.5s;
+                         border:2px solid black ;
+                         border-radius:4px;
+                         margin:10px 20px;
+                         background: rgba(0,0,0,0.5);
+                         color:yellow;
+                         box-sizing:border-box;
+                         width:100%;
+                         box-shadow:  1px 5px rgba(0,0,0,0.3) inset;
+                         padding:20px 6px;
+                         font-size:1.5em;
+                         x-webkit-appearance: none;
+                         }
+                         /* select给padding文字挤出去 */
+      label {margin-left:13px;}
+
+      .formstyle input[type="text"]:focus,
+      .formstyle input[type="email"]:focus,
+      .formstyle textarea:focus,
+      x.formstyle select:focus {background: silver;
+                                }
+
+      .formstyle select {height:25px;}
+
+      .formstyle input[type="submit"] {padding:11px 81px;
+                                       position: 0px;
+                                       margin:0px 31px;
+                                       background-color: rgb(110,240,210);
+                                      }
+
+      .formstyle input[type="submit"]:hover {background: rgb(50,210,200);
+                                             color:white;
+                                             }
+
+      ::-webkit-input-placeholder { color:white; }
+      /* label {xbackground-color: white;
+            } */
+    </style>
+</head>
+<body>
+  <div class="formstyle">
+    <form action="">
+      <fieldset>
+        <legent><span>1</span><span>information</span></legent>
+          <input type="text" name="" placeholder="名字">
+          <input type="email" name="" placeholder="邮箱" font-color=
+          "white">  
+          <textarea name="" id="" cols="22" rows="5" placeholder="描述"></textarea></br>
+          <label for="interests">兴趣爱好</lable></br>
+          <select name="" id="">
+            <optgroup label="indoors" >
+              <option value="钓鱼">养鱼</option>
+              <option value="读书">读书</option>
+              <option value="玩游戏">玩游戏</option>
+              <option value="听音乐">听音乐</option>
+              <option value="其他">其他</option>
+            </optgroup>
+            <optgroup label="outdoors">
+              <option value="足球">足球</option>
+              <option value="篮球">篮球</option>
+              <option value="羽毛球">羽毛球</option>
+              <option value="壁球">壁球</option>
+            </optgroup>
+          </select>
+      </fieldset>
+      <fieldset>
+        <legent><span>2</span><span>附加信息</span></legent>
+        <textarea name="" id="" cols="20" rows="2"></textarea>   
+      </fieldset>
+      <input type="submit" value="APLAY">
+    </form>   
+  </div>        
+</body>
+</html>
