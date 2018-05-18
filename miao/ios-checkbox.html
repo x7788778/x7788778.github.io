@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+  <style>
+    * {
+        xbackground-color:rgba(0,0,0,0.1);
+      }
+    input {    
+        display:none;
+      }
+    
+    input + label {
+        display:inline-block;
+        background-color: rgba(0,0,0,0.05);
+        box-sizing:border-box;
+        border:1px solid rgba(0,0,0,0.1);
+        height:35px;
+        width:63px;
+        border-radius:20px;
+        text-indent:-30px;
+        line-height:35px;
+        text-align:center;
+        
+      }
+      
+    input:checked + label {
+        xfont-size:25px;
+        color:red;
+        xbackground-color: aqua;
+        transition:0.4s linear;
+        text-indent:35px;
+        box-shadow:13px 0px 0px 18px rgb(110,220,95) inset;
+      }
+      
+    .sword {
+        display:inline-block;
+        line-height: 35.5px;
+        vertical-align:bottom;
+        color:red}
+    i {xborder:1px solid black;
+        border-radius:21px;
+        display:inline-block;
+        background-color:white;
+        width:32px;
+        height:32px;
+        line-height:35px;
+        vertical-align:-7px;
+        box-shadow:1px 4px 3px 0px rgba(0,0,0,0.4);
+      }
+  </style>  
+    <p>
+      <span><input type="checkbox" namme="" id="try">
+      <label for="try"><i></i></label></span>
+      <label for="try" class="sword">点击就送屠龙宝刀</label> 
+    </p>  
+  
+</body>
+</html>
