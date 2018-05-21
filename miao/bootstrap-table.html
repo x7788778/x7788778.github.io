@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <style>
+    * {/* background-color: rgba(0,0,0,0.1); */}
+
+    .table-basic {
+      width:800px;
+      background-color: rgb(33,37,41);
+      color:white;
+      font-size: 0.5em;
+      text-align: left;
+      border:0px solid rgb(50,56,62);
+      border:1px solid red;
+      border-collapse:collapse;
+    }
+
+    .table-basic tr {
+      border:1px solid rgb(121,56,62);
+      /* border-collapse:collapse; */
+    }
+
+    .table-basic tbody tr:hover {background-color:red;}
+
+    .table[class$="table-striped"] {
+      /* background-color:rgba(255,255,255); */
+    border:23px solid white;
+      border-collapse:collapse;
+      width:800px;
+      /* padding:-1px; */
+      
+    }
+
+    .table[class$="table-striped"] tr {
+      border:0px solid black;
+      background-color: #fff; 
+    }
+
+    .table[class$="table-striped"] tbody tr:nth-child(1) {
+      background-color:rgb(242,242,242);
+      box-shadow:0px 2px 5px 0px silver inset;  
+    }
+    .table[class$="table-striped"] tbody tr:nth-child(3) {
+      background-color:rgb(242,242,242);
+      box-shadow:0px 2px 5px 0px silver inset;
+    }
+
+
+
+
+    .table[class$="table-bordered"] {
+      border:0.5px solid black;
+      border-collapse:collapse;
+      width:800px;
+      
+    }
+    .table[class$="table-bordered"] tbody tr:nth-child(1) {
+      /* background-color:blue; */
+      box-shadow:0px 3px 0px 0px silver inset;
+      /* border:2px solid red */  
+    }
+    .table[class$="table-bordered"] td {
+      border:0.5px solid silver;
+      background-color: #fff; 
+    }
+    .table[class$="table-bordered"] th {
+      border:0.5px solid silver;
+      background-color: #fff; 
+    }
+
+
+
+
+  
+
+  </style>
+</head>
+<body>
+  <table class="table-basic">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+  <hr>
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+  <hr>
+  <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+</html> 
