@@ -8,14 +8,20 @@
     * {/* background-color: rgba(0,0,0,0.1); */}
 
     .table-basic {
-      width:800px;
       background-color: rgb(33,37,41);
+      /* z-index: -100; */
+      }
+    .table-basic {
+      width:800px;
+      
       color:white;
       font-size: 0.5em;
       text-align: left;
       border:0px solid rgb(50,56,62);
       border:1px solid red;
       border-collapse:collapse;
+      overflow: hidden;
+      
     }
 
     .table-basic tr {
@@ -23,7 +29,20 @@
       /* border-collapse:collapse; */
     }
 
-    .table-basic tbody tr:hover {background-color:red;}
+    .table-basic tbody tr:hover {background-color:rgba(255,0,0,0.3);}
+    
+    .table-basic td {position:relative;}
+
+    .table-basic td:hover::after {
+      content:"";
+      position: absolute;
+      left: 0;
+      background-color:rgba(255,0,0,0.3);
+      width:100%;
+      top:-1000px;
+      height:100000px;
+      z-index:  1;
+    }
 
     .table[class$="table-striped"] {
       /* background-color:rgba(255,255,255); */
