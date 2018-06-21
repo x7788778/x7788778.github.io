@@ -1,0 +1,32 @@
+<script>
+  debugger
+  
+  var a = prompt("a:")
+  var b = prompt("b:")
+  var c = prompt("c:")
+  var s_delta = Math.sqrt(b * b - 4 * a * c)
+  var x1 = -b + s_delta  / 2 / a
+  var x2 = -b - s_delta / 2 / a 
+  if(x1 !== x2)
+  console.log("x1=" + x1 + "x2=" + x2)
+  else if(x1 == x2)
+  console.log("x=" + x1)    
+ 
+  var a = prompt("a:")
+  var b = prompt("b:")
+  var c = prompt("c:")
+  var d = prompt("d:")
+  var e = prompt("e:")
+  var f = prompt("f:")
+  var x = (c * e - b * f) / (a * e - b * d)
+  var y = (d * c - a * f) / (d * b - a * e)
+  if(isNaN(x && y)) 
+  console.log("无解")
+  else if(!isNaN(x && y))
+  console.log("x=" + x + "y=" + y)
+  else if(a / d !== b / e)
+  console.log("x=" + x + "y=" + y);
+
+
+
+</script>
