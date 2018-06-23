@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>画图</title>
+  <style>
+    canvas {
+      border: 2px solid #f0f;
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="400" height="300"></canvas>
+</body>
+<script>
+  var cvs = document.querySelector('canvas')
+  var ctx = cvs.getContext('2d')
+
+  function dot(x, y, color = 'black') {
+    ctx.fillStyle = color
+    ctx.fillRect(x, y, 1, 1)
+  }
+</script>
+<script>
+  for(conter = 0; conter <= 300; conter += 1) {
+    solid = dot(50 + conter,30,"black")
+  }
+
+  for(conter = 0; conter <= 300; conter += 2){
+    solid = dot(50 + conter,60,"black")
+  }
+
+  for(conter = 0; conter <= 300; conter += 3){
+    solid = dot(50 + conter,90,"black")
+  }
+
+  for(conter = 0; conter <= 300; conter += 3){
+    solid = dot(51 + conter,90,"black")
+  }
+  for(conter = 0; conter <= 300; conter += 6){
+    solid = dot(50 + conter,120,"black")
+  }
+  for(conter = 0; conter <= 300; conter += 6){
+    solid = dot(51 + conter,120,"black")
+  }
+  for(conter = 0; conter <= 300; conter += 6){
+    solid = dot(52 + conter,120,"black")
+  }
+
+  for(conter = 0; conter <= 500; conter += 1){
+    solid = dot(1 + conter,1 + conter * 3 / 4,"black")
+    
+  }
+
+  for(conter = 0; conter <= 500; conter += 1){
+    solid = dot(1 + conter,1 + conter,"black")
+    
+  }
+
+  for(conter = 0; conter <= 500; conter += 1){
+    solid = dot(1 + conter,1 + conter,"black")
+    
+  }
+   var cos = Math.cos
+   var sin = Math.sin
+   var PI = Math.PI
+   var r = 50
+   var p = dot(100,70,"red")
+   for(conter = 0; conter <= 360; conter += 1){  
+     circle = dot(cos( PI / 180 * conter ) * r + 100, sin( PI / 180 * conter) * r + 70, "red")
+   }
+
+  for(conter = 0; conter <= 50; conter += 1){
+    solid = dot(200 + conter,150,"blue")
+    solid = dot(200 ,150 + conter,"blue")
+    
+  }
+
+  var draw = function(x, y, r, start, end, color, type) {
+    var radian = Math.PI / 180;
+    ctx.beginPath();
+    ctx.arc(x, y, r, start * radian, end * radian);
+    ctx[type + 'Style'] = color;
+    ctx.closePath();
+    ctx[type]();
+}
+
+draw(100,75,50,0,360,"red","fill")
+
+   
+  
+
+
+</script>
+</html>
