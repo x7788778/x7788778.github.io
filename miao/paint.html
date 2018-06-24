@@ -25,7 +25,8 @@
 </script>
 <script>
   for(conter = 0; conter <= 300; conter += 1) {
-    solid = dot(50 + conter,30,"black")
+    solid = dot(50 + conter,30,"black")         
+    //使用循环再画布上画点，x每次循环增加1，循环0-300为300次，y轴不动，颜色为黑。实际上是300个点。
   }
 
   for(conter = 0; conter <= 300; conter += 2){
@@ -70,6 +71,8 @@
    var p = dot(100,70,"red")
    for(conter = 0; conter <= 360; conter += 1){  
      circle = dot(cos( PI / 180 * conter ) * r + 100, sin( PI / 180 * conter) * r + 70, "red")
+      //pi/180为每一度对应的弧度值，conter此时为度数。cos求出圆周上x的长度。
+      //pi/180为每一度对应的弧度值，conter此时为度数。sin求出圆周上y的长度。具备了xy确定圆周上某一点。
    }
 
   for(conter = 0; conter <= 50; conter += 1){
@@ -78,18 +81,33 @@
     
   }
 
-  var draw = function(x, y, r, start, end, color, type) {
-    var radian = Math.PI / 180;
-    ctx.beginPath();
-    ctx.arc(x, y, r, start * radian, end * radian);
-    ctx[type + 'Style'] = color;
-    ctx.closePath();
-    ctx[type]();
-}
+//   var draw = function(x, y, r, start, end, color, type) {
+//     var radian = Math.PI / 180;
+//     ctx.beginPath();
+//     ctx.arc(x, y, r, start * radian, end * radian);
+//     ctx[type + 'Style'] = color;
+//     ctx.closePath();
+//     ctx[type]();
+// }
 
-draw(100,75,50,0,360,"red","fill")
+//   draw(100,75,50,0,360,"red","fill")
 
-   
+   for(n = 1; n <= 50; n += 1){
+    rowSolid = dot(200 + n, 250, "black")        //外层循环，画第一个点
+      for(i = 1; i <= 50; i += 1){
+        colSolid = dot(200 + n, 250 + i,"black")  //内层循环，画50个点
+      }
+   }
+
+   //如此循环50次有50个平方的点
+
+for(n = 1; n <= 50; n += 1){
+    rowSolid = dot(50 + n, 130, "yellow")        //外层循环，画第一个点
+      for(i = 1; i <= 50; i += 1){
+        colSolid = dot(50 + n, 130 + i,"red")  //内层循环，画50个点
+      }
+   }
+
   
 
 
