@@ -13,9 +13,9 @@ Returns
     return result
   },
 
-
+   
 /*Creates an array with all falsey values removed. The values false, null, 0, "", undefined, and NaN are falsey.
-
+ 
 Since
 0.1.0
 
