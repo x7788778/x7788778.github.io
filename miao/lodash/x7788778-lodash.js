@@ -1,4 +1,4 @@
-x7788778 = {
+var x7788778 = {
  /* Arguments
 array (Array): The array to process.
 [size=1] (number): The length of each chunk
@@ -13,7 +13,7 @@ Returns
     return result
   },
 
-     
+      
 /*Creates an array with all falsey values removed. The values false, null, 0, "", undefined, and NaN are falsey.
  
 Since
