@@ -1,4 +1,5 @@
 var x7788778 = {
+  //array============================================================
  /* Arguments
 array (Array): The array to process.
 [size=1] (number): The length of each chunk
@@ -13,7 +14,7 @@ Returns
     return result
   },
 
-       
+  
 /*Creates an array with all falsey values removed. The values false, null, 0, "", undefined, and NaN are falsey.
  
 Since
@@ -159,9 +160,87 @@ includes : function(ary, val) {
   return indexOf(ary, val) !== -1
     
 },
-unary : function(f) {
-  return function(value) {
-    return f(value)
+
+// flatten : function (ary) {
+//   var result = []
+//   for (var i = 0; i < ary.length; i++) {
+//     if (Array.insArray(aryp[i])) {
+//       result.push(ary[i])
+//     } else {
+//       for (var j = 0; j < ary[i].length; i++){
+//         result.push(aryp[i][j])
+//       }
+//     }
+    
+//   }
+//   return result
+// },
+
+
+//将数组展转为内部展开开一层的样子
+flatten : function (ary) {
+  return [].concat(...ary)
+},
+
+flattenDeep : function (ary) {
+  var result = []
+  for (var i = 0; i < ary.length; i++) {
+    if (Array.isArray(ary[i])) {
+      var temp = flattenDeep(ary[i])
+      result = [...result,...temp]
+    } else {
+      result.push(ary[i])
+    }
+  }
+  return result
+},
+
+flattenDepth : function(ary,depth = 1) {
+  if (depth === 0) {
+    return ary.slice()
+  }
+  var result = []
+  for(var i = 0; i < ary.length; i++) {
+    if(Array.isArray(ary[i])) {
+      var tmp = this.flattenDepth(ary[i],depth-1)
+      result = [...result, ...tmp]
+    } else {
+      result.push(ary[i])
+    }
+  }
+  return result
+},
+
+
+
+//~~~~~~~~~array====================================================================
+
+
+//Math=====================================================================
+/**
+ * array (Array): The array to iterate over.
+[iteratee=_.identity] (Function): The iteratee invoked per element.
+ */
+sumBy : function(array,iteratee) {
+  let result = 0
+  for (let i = 0; i < array.length; i++) {
+    result+=iteratee(array[i])
+  }
+  return result
+},
+
+
+sum : function (array) {
+  return x7788778.sumBy(array,identity)
+},
+
+//~~~~~~~~~Math=====================================================================
+
+
+
+unary : function (f) {
+  return function(values) {
+    return f(values)
   }
 },
 
@@ -222,17 +301,85 @@ reduce: function(ary , reducer, initiaivalue) {
 },
 
 
-    
+forEach : function(ary,iterator) {
+  for (var i = 0; i < ary.length; i++) {
+    if(iterator(ary[i],ary,i) === false) {
+      break
+    }
+  }
+},
 
+
+
+
+
+//Util======================================================================
+/**
+ * .identity(value)
+source npm package
+
+This method returns the first argument it receives.
+
+Since
+0.1.0
+
+Arguments
+value (*): Any value.
+Returns
+(*): Returns value.
+ */
+identity : function(value) {
+  return value
+},
+
+
+/**
+ * Arguments
+source (Object): The object of property values to match.
+Returns
+(Function): Returns the new spec function.
+ */
+matches: function (obj) {       
+  return function(ojbk) {
+    for (var key in obj) {
+      
+      if(obj[key] !== ojbk[key]) {
+        return false
+      }
+    }
+    return true
+  }
+},
+//判断一个对象部分值是否匹配另一个对象。
+
+
+isMatch: function (object,source) {
+  if(!object) {
+    return false
+  }
+  for (var key in object) {
+    if (object[key] !== source[key]) {
+      if(typeof object[key] == "object" && typeof source[key] == "object") {
+        continue
+      }
+      return false
+    }
+  }
   
+  if(typeof object[key] === "object") {
+    for(var key2 in object[key]) {
+      if (object[key][key2] !== source[key][key2]) {
+        return false
+      }
+    }
+  }
+  return true
+}
 
-
-
+//==========================================================================
 
 
 }
-
-
 
 
 
