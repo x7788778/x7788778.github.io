@@ -49,7 +49,6 @@ Returns
   concat1 : function(array,...values) {
     var length = arguments.length
     if (!length) {
-      
     }
     let result = []
     for (let i = 0; i < values.length; i++) {
@@ -86,17 +85,15 @@ Returns
   let result = 0
   for (let i = 0; i < array.length; i++) {
     for (let j = 0; j < values.length; j++){
-
       if (values[j] == array[i]) {
         result++
-
       }
     }
   }
 //时间复杂度为n方，
   return [result]
 },
-
+    
  difference : function(array,values) {
   let result = 0
   return values.reduce(function(result,item,ary){
@@ -374,11 +371,75 @@ isMatch: function (object,source) {
     }
   }
   return true
-}
+},
+
+
+property : function(name) {
+  return function(obj) {
+    return obj[name]
+  }
+},
+propertyOf: function(object) {
+  return function(name) {
+    return object[name]
+  }
+},
+
 
 //==========================================================================
 
+//ISFUNCTION================================================================
+after : function(n,func) {
+  var c = 0
+  return function(...args) {
+    c++
+    if (c >= n) {
+      return func(...args)
+    }
+  } 
+},
+before : function(n,func) {
+  var c = 0
+  var result
+  return function(...args) {
+    c++
+    if (c < n) {
+      return result =  func(...args)
+    }
+    return result
+  } 
+},//再未来超过n次的时候，考虑返回什么值,这里将返回最后一次调用的值
 
+ary : function(func , n = func.length) {
+  return function(...args) {
+    return func(...args.slice(0,n))  
+  } 
+},
+flip : function (func) {
+	return function(...args){
+		return func(...args.reverse)
+	}
+},
+
+spread2 : function(func) {
+  return function(ary){
+    return func(...args)
+  }
+},
+
+spread : function(func) {
+  return function(ary){
+    return func.apply(null,ary)
+  }
+},
+
+bind : function(func,thisArg,fixedArgs) {
+  return function (...restArgs) {
+    func.apply(thisArg,[...fixedArgs,...restArgs])
+  }
+}
+
+//~~~~ISFUNCTION================================================================
 }
 
 
