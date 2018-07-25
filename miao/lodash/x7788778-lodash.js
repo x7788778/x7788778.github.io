@@ -28,7 +28,8 @@ Returns
  compact: function(array) {
     let result = []
     for (let i = 0; i < array.length; i++) {
-      if (array[i] != false) {
+      // if (array[i] != false) {   null != false <.true     
+      if (array[i]) {     
         result.push(array[i])
       }
     }
@@ -46,18 +47,24 @@ array (Array): The array to concatenate.
 Returns
 (Array): Returns the new concatenated array. */
 
-  concat1 : function(array,...values) {
-    var length = arguments.length
-    if (!length) {
+  concat : function(array,...values) {
+    var l = values.length
+    if (!l) {
+      return array
     }
-    let result = []
-    for (let i = 0; i < values.length; i++) {
-       array.push(...valus[i])
+    for (let i = 0; i < l; i++) {
+      if(typeof values[i] === "object") {
+        array.push(...values[i])
+      } else {
+        array.push(values[i])
+      }
     }
     return array
   },
-  concat : function(array,...values) {
-    return values.reduce(function(item,i,...values){
+
+  concat1 : function(array,...values) {
+
+    return values.reduce(function(item,...values){
         typeof item === "object" ? array.push(...item) : array.push(item)
     },array)
   },
@@ -82,19 +89,20 @@ Returns
   */
 
  difference : function(array,...values) {
-  let result = 0
-  for (let i = 0; i < array.length; i++) {
-    for (let j = 0; j < values.length; j++){
-      if (values[j] == array[i]) {
-        result++
-      }
+  let result = []
+  var values = [].concat(...values)
+  var l = values.length
+  for (var i = 0; i < array.length; i++) {
+    if(!values.includes(array[i])) {
+      result.push(array[i])
     }
   }
 //时间复杂度为n方，  
-  return [result]
+  return result
 },
+
     
- difference : function(array,values) {
+ difference2 : function(array,values) {
   let result = 0
   return values.reduce(function(result,item,ary){
     if (item === array[i]){
@@ -104,9 +112,40 @@ Returns
 //时间复杂度为n方，
   return [result]
 },
+differenceBy : function(array, ...args) {
+  var res = []
+  var f 
+  var p
+  if (typeof arguments[arguments.length-1]  === "function") {
+    f = arguments.pop()
+  } else if (typeof arguments[arguments.length-1] === "String") {
+    f = property
+  }
+  for(var i = 0; i < array.length; i++) {
+    if(!f(...args).includes(f(array[i]))){
+       res.push(array[i])
+
+    }
+  }
+
+  return res
 
 
+},
 
+/**
+ * function differenceBy(array, ...args) {
+    let func
+    if (typeof args[args.length - 1] === 'function' || typeof args[args.length - 1] === 'string') {
+        func = gyqgyq.iteratee(args.pop())
+    } else {
+        func = gyqgyq.identity
+    }
+    args = gyqgyq.flattenDeep([...args])
+    let newValue = args.map(it => func(it))
+    return array.filter(item => !newValue.includes(func(item)))
+}
+ */
 
   indexOf : function(ary, val) {
     for(var i = 0; i < ary.length; i++) {
