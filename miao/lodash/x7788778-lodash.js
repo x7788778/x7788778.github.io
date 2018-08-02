@@ -249,10 +249,10 @@ flattenDepth : function(ary,depth = 1) {
 
 
 
-//~~~~~~~~~array====================================================================
+//~~~~~~~~~array==========================================================================================
 
 
-//Math=====================================================================
+//Math=================================================================================================
 /**
  * array (Array): The array to iterate over.
 [iteratee=_.identity] (Function): The iteratee invoked per element.
@@ -270,7 +270,7 @@ sum : function (array) {
   return x7788778.sumBy(array,identity)
 },
 
-//~~~~~~~~~Math=====================================================================
+//~~~~~~~~~Math=============================================================================================
 
 
 
@@ -349,7 +349,7 @@ forEach : function(ary,iterator) {
 
 
 
-//Util======================================================================
+//Util=================================================================================================
 /**
  * .identity(value)
 source npm package
@@ -425,7 +425,7 @@ propertyOf: function(object) {
 },
 
 
-//==========================================================================
+//Util=======================================================================================================
 
 //ISFUNCTION================================================================
 after : function(n,func) {
@@ -476,15 +476,28 @@ bind : function(func,thisArg,fixedArgs) {
   return function (...restArgs) {
     func.apply(thisArg,[...fixedArgs,...restArgs])
   }
+},
+
+
+//~~~~ISFUNCTION=========================================================================================
+//ISObject=========================================================================================
+assign : function(obj, ...args) {
+  return  arsg.reduce(
+},
+
+/**
+ * (object, ...sources) => {
+    return sources.reduce((acc, cur) => {
+        for (var [key, value] of Object.entries(cur)) acc[key] = value
+        return acc
+    }, object)
 }
-
-//~~~~ISFUNCTION================================================================
-}
-
-
-
-
-
+ */
+/**object, ...sources) => 
+ * sources.reduce((accumulator, currentValue) => 
+ * (hohenheimsd.forEach(currentValue, (value, key) => 
+ * accumulator[key] = value), accumulator), object */
+//~~~~ISObject=========================================================================================
 
 
 
@@ -496,6 +509,11 @@ bind : function(func,thisArg,fixedArgs) {
 
 
 
+
+
+
+
+},
 
 
 
