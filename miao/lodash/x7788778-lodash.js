@@ -101,49 +101,124 @@ Returns
   return result
 },
 
+baseDifference : function (array, values, iteratee, comparator) {
+  let includes = arrayIncludes
+  let isCommon = true
+  const result = []
+  const valuesLength = values.length
+
+  if (!array.length) {
+    return result
+  }
+  if (iteratee) {
+    values = map(values, (value) => iteratee(value))
+  }
+  if (comparator) {
+    // 有比较器时，改用支持比较器的arrayIncludesWith
+    includes = arrayIncludesWith
+    // 标识为不是普通比较
+    isCommon = false
+  }
+  // 当比较的数值长度超过200个时，启用缓存
+  else if (values.length >= LARGE_ARRAY_SIZE) {
+    includes = cacheHas
+    isCommon = false
+    values = new SetCache(values)
+  }
+  outer:
+  for (let value of array) {
+    // 迭代器最终值
+    const computed = iteratee == null ? value : iteratee(value)
+    value = (comparator || value !== 0) ? value : 0
+    // 普通比较，并且非NaN
+    if (isCommon && computed === computed) {
+      let valuesIndex = valuesLength
+      while (valuesIndex--) {
+        if (values[valuesIndex] === computed) {
+          // 如果有相等的元素，不必要继续遍历，回到最外层循环outer
+          continue outer
+        }
+      }
+      result.push(value)
+    }
+    // isCommon=false时，非普通比较，比较values里边是否存在computed
+    else if (!includes(values, computed, comparator)) {
+      result.push(value)
+    }
+  }
+  return result
+},
+
+
+// differenceBy = function (array, ...values) {
+//   // iteratee赋值为为最后一个参数
+//   let iteratee = last(values)
+//   // 如果没有iteratee
+//   if (isArrayLikeObject(iteratee)) {
+//     iteratee = undefined
+//   }
+//   return isArrayLikeObject(array)
+//   // iteratee的作用见baseDifference里边
+//     ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject, true), iteratee)
+//     : []
+// },
     
- difference2 : function(array,values) {
-  let result = 0
-  return values.reduce(function(result,item,ary){
-    if (item === array[i]){
-      result++
-    }
-  },[])
-//时间复杂度为n方，
-  return [result]
-},
-differenceBy : function(array, ...args) {
-  var res = []
-  var f 
-  var p
-  if (typeof arguments[arguments.length-1]  === "function") {
-    f = arguments.pop()
-  } else if (typeof arguments[arguments.length-1] === "String") {
-    f = property
+
+// differenceBy2 : function(array, ...args) {
+//   var res = []
+//   var f 
+//   if (typeof arguments[arguments.length-1]  === "function") {
+//     f = arguments[arguments.length -1]
+//     for(var i = 0,j = 1; i < array.length; i++) {
+//       if(!f(arguments[j++]).includes(f(array[i]))){
+//          res.push(array[i])
+//       }
+//     }
+    
+//   } else if (typeof arguments[arguments.length-1] === "string") {
+    
+//     f = this.property
+//     var property = arguments[arguments.length -1]
+//     for(var i = 0,j = 1; i < array.length; i++) {
+//       if(!f(arguments[j++][property]).includes(f(array[i][property]))){
+//          res.push(array[i])
+//       }
+//     }
+//   }
+//   return res
+// },
+differenceBy(array, ...args) {
+  let iteratee = null
+  if (typeof args[args.length - 1] === 'function' || typeof args[args.length - 1] === 'string') {
+      iteratee = args.pop()
+  } else {
+      iteratee = this.identity
   }
-  for(var i = 0; i < array.length; i++) {
-    if(!f(...args).includes(f(array[i]))){
-       res.push(array[i])
-
-    }
-  }
-
-  return res
-
-
+  iteratee = this.iteratee(iteratee)
+  var ary = [].concat(...args).map(it => iteratee(it))
+  return array.filter(item => {
+      return !ary.includes(iteratee(item))
+  })
 },
 
+differenceWith:function(array, val, comparator) {
+  return array.filter(item => val.every(value => !comparator(value, item)))
+},
 /**
- * function differenceBy(array, ...args) {
-    let func
-    if (typeof args[args.length - 1] === 'function' || typeof args[args.length - 1] === 'string') {
-        func = gyqgyq.iteratee(args.pop())
-    } else {
-        func = gyqgyq.identity
+ * function(array, ...values) {
+    if (Array.isArray(values[values.length - 1])) {
+        return this.difference(array, ...values);
     }
-    args = gyqgyq.flattenDeep([...args])
-    let newValue = args.map(it => func(it))
-    return array.filter(item => !newValue.includes(func(item)))
+    let iteratee = this.iteratee(values[values.length - 1])
+    values.length -= 1;
+    let that = this;
+    return array.filter(function(item, index) {
+        if (that.concat([], ...values).map(function(it, idx) {
+                return iteratee(it);
+            }).indexOf(iteratee(item)) == -1)
+            return item
+    })
+}
 }
  */
 
@@ -155,22 +230,10 @@ differenceBy : function(array, ...args) {
     }
     return -1
   },
+findLastIndex : function(ary,predicate = this.identity, fromIndex = ary.length - 1) {
 
-/*
-  includes : function(ary, val) {
-    for(var i = 0; i < ary.length; i++){
-      if (ary[i] !== ary[i]) {    //想法错误
-        return true
-      }else if (ary[i] == val) {
-        return true
-      }
+},
 
-    }
-    return false
-    
-  },
-
-*/
 /*
 includes : function(ary, val) {
   if (val !== val) {                   //根据NaN ！==NaN的特性，
@@ -187,14 +250,51 @@ includes : function(ary, val) {
 
 },
 */
-includes : function(ary, val) {
-  if (val !== val) {                   //根据NaN ！==NaN的特性，
-    
-        return true
+includes : function(ary, val , fromIndex = 0) {
+  if(!ary) {
+    throw console.error("请输入带有length属性的值类型")
+  }
+var count = 0
+  if(Object.prototype.toString.call(ary) === "[object Array]" || typeof ary === "string") {
+    for (var i = fromIndex; i < ary.length; i++) {
+      if (val !== val) {                   //根据NaN ！==NaN的特性，
+            if(ary[i] !== ary[i]){
+              return true
+            }
+          } else {
+            if(val.length) {
+              for (var Vkey in val) {
+                if (ary[i] === val[Vkey]) {
+                  count++
+                }
+              }
+              if(val.length === count) {
+                return true
+              }
+            } else {
+              if(ary[i] === val) {
+                return true
+              }
+            }
+          }
       }
+      return false
+  }
+  if(typeof ary === "object") {
+    for(var key in ary) {
+      if (ary[key] === val) {
+        return true
       
-  return indexOf(ary, val) !== -1
-    
+        } else {
+          if (val !== val) {                   //根据NaN ！==NaN的特性，
+            if(ary[key] !== ary[key]){
+              return true
+          }
+        }
+      }
+    }
+    return false
+  }
 },
 
 // flatten : function (ary) {
@@ -219,16 +319,7 @@ flatten : function (ary) {
 },
 
 flattenDeep : function (ary) {
-  var result = []
-  for (var i = 0; i < ary.length; i++) {
-    if (Array.isArray(ary[i])) {
-      var temp = flattenDeep(ary[i])
-      result = [...result,...temp]
-    } else {
-      result.push(ary[i])
-    }
-  }
-  return result
+ return this.flattenDepth(ary,Infinity)
 },
 
 flattenDepth : function(ary,depth = 1) {
@@ -246,7 +337,35 @@ flattenDepth : function(ary,depth = 1) {
   }
   return result
 },
+drop : function(ary,n = 1){
+  return ary.slice(n)
+},
+dropRight : function(ary,n = ary.length - 1){
+  if(!ary.length){
+    return []
+  }
+  return ary.slice(ary.length - n)
+},
 
+iteratee : function(shorthand) {
+  if(typeof shorthand === "string") {
+    return this.matches(shorthand)
+  }
+  if(typeof shorthand === "array") {
+    return this.matchesProperty(shorthand)
+  }
+  if(typeof shorthand === "object") {
+    return this.property(shorthand)
+  }
+},
+dropRightWhile = function (array, predicate) {
+  predicate = iteratee(predicate)
+  for (var i = array.length - 1; i >= 0; i--) {
+      if (!predicate(array[i])) {
+        return array.slice(0, i + 1)
+      }
+  }
+},
 
 
 //~~~~~~~~~array==========================================================================================
@@ -293,8 +412,8 @@ negate : function (f) {
 
 
 
-fill : function (ary, val) {
-  for (let i = 0; i < ary.length; i++) {
+fill : function (ary, val,start = 0, end = ary.length) {
+  for (let i = start; i < end; i++) {
     ary[i] = val    //每一个对象都指向同一个值
   }
   return ary
@@ -386,33 +505,55 @@ matches: function (obj) {
     return true
   }
 },
-//判断一个对象部分值是否匹配另一个对象。
-
-
-isMatch: function (object,source) {
-  if(!object) {
-    return false
+//判断一个对象部分值是否匹配另一个对象。返回treu和false
+matchesProperty : function(path, srcvalue){
+  return function(obj) {
+    return obj[path] === srcvalue
   }
-  for (var key in object) {
-    if (object[key] !== source[key]) {
-      if(typeof object[key] == "object" && typeof source[key] == "object") {
-        continue
-      }
-      return false
-    }
-  }
-  
-  if(typeof object[key] === "object") {
-    for(var key2 in object[key]) {
-      if (object[key][key2] !== source[key][key2]) {
-        return false
-      }
-    }
-  }
-  return true
 },
 
+// isMatch: function (object,source) {
+//   if(!object) {
+//     return false
+//   }
+//   for (var key in object) {
+//     if (object[key] !== source[key]) {
+//       if(typeof object[key] == "object" && typeof source[key] == "object") {
+//         continue
+//       }
+//       return false
+//     }
+//   }
+  
+//   if(typeof object[key] === "object") {
+//     for(var key2 in object[key]) {
+//       if (object[key][key2] !== source[key][key2]) {
+//         return false
+//       }
+//     }
+//   }
+//   return true
+// },
+isMatch : function(obj, source) {
+  //遍历source下标
+  for (var key in source) {
+      //如果对应下标位置数据属于Object类型，递归
+      if (source[key] instanceof Object) {
+          return this.isMatch(obj[key], source[key])
+        } else if (obj[key] !== source[key]) {
+          //直到source对应下标数据不是Object类型的，对比相等性
+          return false
+        }
+      }
+      return true //摘自某同学
+  },
 
+ isMatchWidth : function(object, source, customizer) {
+    for (var i in source) {
+        if (!customizer(object[i], source[i], key, object, source)) return false
+    }
+    return true
+},
 property : function(name) {
   return function(obj) {
     return obj[name]
@@ -479,10 +620,11 @@ bind : function(func,thisArg,fixedArgs) {
 },
 
 
-//~~~~ISFUNCTION=========================================================================================
-//ISObject=========================================================================================
+//~~~~ISFUNCTION=======================================================================================================================
+
+//ISObject=======================================================================================================================
 assign : function(obj, ...args) {
-  return  arsg.reduce(
+  return  arsg.reduce()
 },
 
 /**
@@ -497,23 +639,83 @@ assign : function(obj, ...args) {
  * sources.reduce((accumulator, currentValue) => 
  * (hohenheimsd.forEach(currentValue, (value, key) => 
  * accumulator[key] = value), accumulator), object */
-//~~~~ISObject=========================================================================================
+//~~~~ISObject=======================================================================================================================
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+//ISLANG=======================================================================================================================
+isObjectLike : function(value){
+  return typeof value === "object" && value !== null
+},
+isObject : function(value){
+  return value instanceof Object
+},
+isNumber : function(value) {
+  return Object.prototype.toString.call(value) === "[object Number]" || typeof value === "number"
+},
+isFunction : function(value) {
+  return Object.prototype.toString.call(value) === "[object Function]" || typeof value === "function"
+},
+isArray : function(value) {
+  return Object.prototype.toString.call(value) === "[object Array]" || typeof value === "array"
+},
+isArrayLike : function(value) {
+  return Object.prototype.toString.call(value) 
+  === ("[object Array]"||"[object String]") || typeof value === ("array"||"string") //数组类
+},
+isArrayLikeObject : function(value) {
+  return Object.prototype.toString.call(value) === "[object Object]" || typeof value === "object" //数组类
+},
+isNil : function(value){
+  return value === undefined || value === null
+},
+isNull : function(value){
+  return value === null
+},
+isString : function(value) {
+  return Object.prototype.toString.call(value) === "[object String]" || typeof value === "string"
+},
+isRegExp : function(value) {
+  return Object.prototype.toString.call(value) === "[object RegExp]"
+},
+isBoolean : function(value) {
+  return Object.prototype.toString.call(value) === "[object Boolean]" || typeof value === "boolean"
+},
+isLength : function(value) {
+  return value.length > 0
+},
+last : function(ary) {
+  var last
+  if (!ary.length && typeof ary !== "array") {
+    throw console.error(请输入数组);
+    
+  } else {
+    return last = ary[ary.length - 1]
+  }
 },
 
+// isNumber : function(value) {
+//   return Object.prototype.toString.call(value) === "[object Number]" || typeof value === "number"
+// },
+// isNumber : function(value) {
+//   return Object.prototype.toString.call(value) === "[object Number]" || typeof value === "number"
+// },
+// isNumber : function(value) {
+//   return Object.prototype.toString.call(value) === "[object Number]" || typeof value === "number"
+// },
+
+//~~~~=======================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+}
 
 
