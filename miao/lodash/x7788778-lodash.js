@@ -13,18 +13,6 @@ Returns
     }
     return result
   },
-
-   
-/*Creates an array with all falsey values removed. The values false, null, 0, "", undefined, and NaN are falsey.
- 
-Since
-0.1.0
-
-Arguments
-array (Array): The array to compact.
-Returns
-(Array): Returns the new array of filtered values.
-*/
  compact: function(array) {
     let result = []
     for (let i = 0; i < array.length; i++) {
@@ -35,18 +23,6 @@ Returns
     }
   return result
   },
-
-/**Creates a new array concatenating array with any additional arrays and/or values.
-
-Since
-4.0.0
-
-Arguments
-array (Array): The array to concatenate.
-[values] (...*): The values to concatenate.
-Returns
-(Array): Returns the new concatenated array. */
-
   concat : function(array,...values) {
     var l = values.length
     if (!l) {
@@ -61,7 +37,6 @@ Returns
     }
     return array
   },
-
   concat1 : function(array,...values) {
 
     return values.reduce(function(item,...values){
@@ -87,7 +62,6 @@ Returns
     return arrayPush(isArray(array) ? copyArray(array) : [array], baseFlatten(args, 1));
   },
   */
-
  difference : function(array,...values) {
   let result = []
   var values = [].concat(...values)
@@ -100,7 +74,6 @@ Returns
 //时间复杂度为n方，  
   return result
 },
-
 baseDifference : function (array, values, iteratee, comparator) {
   let includes = arrayIncludes
   let isCommon = true
@@ -148,8 +121,6 @@ baseDifference : function (array, values, iteratee, comparator) {
   }
   return result
 },
-
-
 // differenceBy = function (array, ...values) {
 //   // iteratee赋值为为最后一个参数
 //   let iteratee = last(values)
@@ -200,7 +171,6 @@ differenceBy(array, ...args) {
       return !ary.includes(iteratee(item))
   })
 },
-
 differenceWith:function(array, val, comparator) {
   return array.filter(item => val.every(value => !comparator(value, item)))
 },
@@ -221,7 +191,9 @@ differenceWith:function(array, val, comparator) {
 }
 }
  */
-
+  first : function(ary){
+    return ary[0]
+  },
   indexOf : function(ary, val) {
     for(var i = 0; i < ary.length; i++) {
       if (ary[i] == val) {
@@ -231,9 +203,24 @@ differenceWith:function(array, val, comparator) {
     return -1
   },
 findLastIndex : function(ary,predicate = this.identity, fromIndex = ary.length - 1) {
-
+  predicate = this.iteratee(predicate)
+  for(var i = fromIndex; i >= 0; i--) {
+    if (predicate(ary[i])) {
+      return i
+    }
+  }
+  return -1
+  
 },
-
+findIndex : function(ary, predicate = this.identity, fromIndex = 0) {
+  predicate = this.iteratee(predicate)
+  for(var i = fromIndex ; i < ary.length; i++) {
+    if (predicate(ary[i])) {
+      return i
+    }
+  }
+  return -1
+},
 /*
 includes : function(ary, val) {
   if (val !== val) {                   //根据NaN ！==NaN的特性，
@@ -358,7 +345,7 @@ iteratee : function(shorthand) {
     return this.property(shorthand)
   }
 },
-dropRightWhile = function (array, predicate) {
+dropRightWhile : function (array, predicate) {
   predicate = iteratee(predicate)
   for (var i = array.length - 1; i >= 0; i--) {
       if (!predicate(array[i])) {
@@ -407,11 +394,6 @@ negate : function (f) {
   }
 },
 
-  
-    
-
-
-
 fill : function (ary, val,start = 0, end = ary.length) {
   for (let i = start; i < end; i++) {
     ary[i] = val    //每一个对象都指向同一个值
@@ -429,8 +411,6 @@ slice: function(ary,start,end){
     return  result
 },
 
-
-
 filter: function (ary,test) {
   return array.reduce(function(result, item, index, ary) {
     if (test(item, index, ary)) {
@@ -439,8 +419,6 @@ filter: function (ary,test) {
     return result
   },[])
 },
-
-
 map: function (array, mapper) {
   return array.reduce(function(acc, item, index, ary){
     result.push(mapper(item, index, ary))
@@ -464,10 +442,6 @@ forEach : function(ary,iterator) {
   }
 },
 
-
-
-
-
 //Util=================================================================================================
 /**
  * .identity(value)
@@ -486,8 +460,6 @@ Returns
 identity : function(value) {
   return value
 },
-
-
 /**
  * Arguments
 source (Object): The object of property values to match.
@@ -564,8 +536,6 @@ propertyOf: function(object) {
     return object[name]
   }
 },
-
-
 //Util=======================================================================================================
 
 //ISFUNCTION================================================================
@@ -618,8 +588,6 @@ bind : function(func,thisArg,fixedArgs) {
     func.apply(thisArg,[...fixedArgs,...restArgs])
   }
 },
-
-
 //~~~~ISFUNCTION=======================================================================================================================
 
 //ISObject=======================================================================================================================
@@ -640,8 +608,6 @@ assign : function(obj, ...args) {
  * (hohenheimsd.forEach(currentValue, (value, key) => 
  * accumulator[key] = value), accumulator), object */
 //~~~~ISObject=======================================================================================================================
-
-
 
 //ISLANG=======================================================================================================================
 isObjectLike : function(value){
