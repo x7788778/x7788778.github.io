@@ -133,7 +133,7 @@ baseDifference : function (array, values, iteratee, comparator) {
 //     ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject, true), iteratee)
 //     : []
 // },
-    
+
 
 // differenceBy2 : function(array, ...args) {
 //   var res = []
@@ -202,16 +202,25 @@ differenceWith:function(array, val, comparator) {
     }
     return -1
   },
-findLastIndex : function(ary,predicate = this.identity, fromIndex = ary.length - 1) {
-  predicate = this.iteratee(predicate)
-  for(var i = fromIndex; i >= 0; i--) {
-    if (predicate(ary[i])) {
-      return i
+  lastIndexOf: function(ary, value, fromIndex=ary.length-1){
+    var l = ary.length
+    for (var i = fromIndex ; i >=0; i--) {
+      if(ary[i] === value) {
+        return i
+      }
     }
-  }
-  return -1
+    return -1
+  },
+  findLastIndex : function(ary, predicate = this.identity, fromIndex = ary.length - 1) {
+    predicate = this.iteratee(predicate)
+    for(var i = fromIndex; i >= 0; i--) {
+      if (predicate(ary[i])) {
+       return i
+      }
+    }
+    return -1
   
-},
+  },
 findIndex : function(ary, predicate = this.identity, fromIndex = 0) {
   predicate = this.iteratee(predicate)
   for(var i = fromIndex ; i < ary.length; i++) {
@@ -221,22 +230,14 @@ findIndex : function(ary, predicate = this.identity, fromIndex = 0) {
   }
   return -1
 },
-/*
-includes : function(ary, val) {
-  if (val !== val) {                   //根据NaN ！==NaN的特性，
-    for (var i = 0; i < ary.length; i++) {  //
-      if (ary[i] === ary[i]) {
-        return true
-      }
-
-    }
-    return false
-
+nth:function(ary, n = 0){
+  if(n >= 0) {
+    return ary[n]
+  } else {
+    return ary[ary.length + n]
   }
-  return indexOf(ary, val) !== -1
-
 },
-*/
+
 includes : function(ary, val , fromIndex = 0) {
   if(!ary) {
     throw console.error("请输入带有length属性的值类型")
@@ -324,6 +325,14 @@ flattenDepth : function(ary,depth = 1) {
   }
   return result
 },
+
+fromPairs : function(ary) {
+  var res = {}
+  for(var key of ary) {
+    res[key[0]] = key[1]
+  }
+  return res
+},
 drop : function(ary,n = 1){
   return ary.slice(n)
 },
@@ -333,7 +342,9 @@ dropRight : function(ary,n = ary.length - 1){
   }
   return ary.slice(ary.length - n)
 },
-
+head :function(ary) {
+  return ary[0]
+},
 iteratee : function(shorthand) {
   if(typeof shorthand === "string") {
     return this.matches(shorthand)
@@ -353,8 +364,26 @@ dropRightWhile : function (array, predicate) {
       }
   }
 },
+initial: function(ary) {
+  return ary.slice(0,ary.length - 1)
+},
+intersection:function (...arrays) {
+  return intersectionBy(...arrays)
+},
 
-
+intersectionBy: function(...args,iteratee){
+  return intersectionBy(...args,iteratee)
+},
+join: function(ary,separator=','){
+  
+  var res = ""
+  var l = ary.length
+  for(var i = 0; i < l -1; i++) {
+    res += ary[i] + separator
+  }
+  
+  return res + ary[i]
+},
 //~~~~~~~~~array==========================================================================================
 
 
@@ -467,15 +496,16 @@ Returns
 (Function): Returns the new spec function.
  */
 matches: function (obj) {       
-  return function(ojbk) {
-    for (var key in obj) {
+  // return function(ojbk) {
+  //   for (var key in obj) {
       
-      if(obj[key] !== ojbk[key]) {
-        return false
-      }
-    }
-    return true
-  }
+  //     if(obj[key] !== ojbk[key]) {
+  //       return false
+  //     }
+  //   }
+  //   return true
+  // }
+  return obj => this.isMatch(obj,source)
 },
 //判断一个对象部分值是否匹配另一个对象。返回treu和false
 matchesProperty : function(path, srcvalue){
@@ -651,12 +681,10 @@ isLength : function(value) {
   return value.length > 0
 },
 last : function(ary) {
-  var last
   if (!ary.length && typeof ary !== "array") {
     throw console.error(请输入数组);
-    
   } else {
-    return last = ary[ary.length - 1]
+    return ary[ary.length - 1]
   }
 },
 
@@ -678,10 +706,157 @@ last : function(ary) {
 
 
 
+parse : function(){
+  var i = 0
+
+  return function parse(str) {
+    i = 0
+    return parseValue()
+  }
+  function parseValue(){
+    var c = str[i]
+    if(c === "{") {
+      return parseObject()   
+    }else if(c === "[") {
+      return parseArray()
+    }else if(c === '"') {
+      return parseString()
+    }else if(c === "t") {
+      return parseTrue()
+    }else if(c === "f") {
+      return parseFalse()
+    }else if(c === "n") {
+      return parseNull()
+    } else {
+      return parseNumber()
+    }
+  }
+  //{"a":1,"b":2}
+  function parseObject(){    //读外部变量，不需要参数
+    i++
+    if(str[i] === "}") {
+      return {}
+    }
+    var result = {}
+    while(true){
+      var key = parseString()        
+      i++
+      var value = parseValue()
+      result[key] = value
+      if (str[i] === ',') {
+        i++
+        continue
+      } else if (str[i] === '}') {
+        i++
+        return result
+      }
+    }
+  }
+  function parseArray(){
+    i++
+    if(str[i] == "]") {
+      return []
+    }
+    var result = []
+    var val
+    while(true){
+      val = parseValue()
+      result.push(val)
+      if(str[i] === ',') {
+        i++
+        continue
+      } else if(str[i] === ']') {
+        i++
+        return result
+      }
+    }
+
+    }
+  function parseString(){
+    for (var j = i + 1; ;j++) {
+      if(str[j] === '"') {
+        break
+      }
+    }
+    var result = str.slice(i + 1, j)
+    i = j + 1
+    return result
+  }
+  function parseTrue(){
+    var token = str.slice(i,i+4)
+    if(token === "true") {
+      i = i + 4
+      return true
+    } else {
+      throw new syntaxError("unexpected token at position" + i)
+    }
+  }
+  function parseFalse(){
+    var token = str.slice(i,i+5)
+    if(token === "false") {
+      i = i + 5
+      return false
+    } else {
+      throw new syntaxError("unexpected token at position" + i)
+    }
+  }
+  function parseNull(){
+    var token = str.slice(i,i+4)
+    if(token === "null") {
+      i = i + 4
+      return null
+    } else {
+      throw new syntaxError("unexpected token at position" + i)
+    }
+  }
+  function isNumberChar(c) {
+    if (c >= '0' && c <= '9') {
+      return true
+    }
+    if(c === '.' || c === '+' || c ==='-' || c === 'e' || c === 'E') {
+      return true
+    }
+    return false
+  }
+  function parseNumber() {
+    var j = i
+    while (isNumberChar(str[j])) {
+      j++
+    }
+    var numString = str.slice(i, j)
+    i = j
+    return parseFloat(numString)
+  }
 
 
+}(),
 
+stringify : function (value) {
+  if (Array.isArray(value)) {
+    return '[' + value.map(stringify).join(",") +']'
+  } else if (typeof value === "object") {
+    var result = '{'
+    for (var k in value) {
+      var v = value[k]
+      result += `"${k}"` + ':' + stringify(v) + ','
+    }
+    result = result.slice(0, -1) + '}'
+    return result         //最后记得返回
+  } else if( typeof value === 'boolean'){
+    if(value) {
+      return 'true'
+    } else {
+      return 'false'
+    }
+  } else if (typeof val === 'number') {
+    return number.toString()
+  }
+},
 
 }
+
+
+
+
 
 
