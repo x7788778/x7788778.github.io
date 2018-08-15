@@ -371,8 +371,8 @@ intersection:function (...arrays) {
   return intersectionBy(...arrays)
 },
 
-intersectionBy: function(...args,iteratee){
-  return intersectionBy(...args,iteratee)
+intersectionBy: function(...args){
+  return intersectionBy(...args)
 },
 join: function(ary,separator=','){
   
