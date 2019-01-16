@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+<style>
+ 
+  .menu {
+
+    margin:0;
+    padding:0;
+    position:fixed;
+    border:1px,solid,black;
+  }
+</style>
+</head>
+<body>
+ 
+  <script>
+    function t(parts){      //参数是对象
+      var node = document.createElement("div")
+      node.innerHTML = parts.join("")   //join成字符串，因为innerhtml会将字符串解析成dom
+      return node.firstElementChild     //返回dom第一个接节点
+    }
+    //t`可按照html文档形式创建dom结构`
+    //注意使用它创建dom节点。浏览器会先行解析，然后再把解析到的文本创建成dom节点,会额外耗费时间。
+
+    window.addEventListener("contextmenu", function(e){
+      console.log(e)
+      var menu = t`
+      <ul class"menu">
+        <li>保存</li>
+        <li>发送</li>
+      </ul>
+      `
+      console.log(menu)
+      menu.style.top = e.clientY + "px"
+      menu.style.left = e.clientX + "px"
+      document.body.appendChild(menu)
+      e.preventDefault()
+      
+    })
+
+    
+  </script>
+ 
+</body>
+</html>

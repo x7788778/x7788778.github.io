@@ -1,0 +1,57 @@
+<script>
+  getElementsBytagName(node, "a")
+  function getElementsBytagName(node, tagName){
+    tagName = 
+    var result = []
+    for(var child of node.children) {
+      if(child.tagName === tagName){
+        result.push(child)
+      }
+    }
+  }
+  
+  function getElementsBytagName(node, tagName){
+    
+    for(var child of node.children) {
+      if(child.nodetype === document.ELEMENT_NODE){
+          if(className.split(' ').filter(it => it).every(name => child.classlist.contains(name))){
+                                  //过滤空掉空字符串
+          }
+      }
+    }
+  }
+
+  function getElementsById(id){
+    var node= document.documentElement //考虑倒id是唯一的。从头开始找。
+    var result = []
+    if (node.id === id) {
+      return node
+    } else {
+      for(var el of node.children) {
+        var result = getElementsById(id, el)
+        if(result) {
+          return result
+        }
+      }
+      return null  //大部分dom节点找不到的时候通常返回null
+    }
+  }
+
+  function traverseDom(node, action) {
+    action(node)
+    for(var child of node.children) {
+      traverseDom(child, action)
+    }
+  }
+
+
+
+
+
+  function elt(tagName, ...children) {
+    var node = document.createElement(tagName)
+    children.    
+
+
+  }
+</script>
